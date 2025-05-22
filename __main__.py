@@ -4,11 +4,11 @@ from codage import  huffman_base, huffman_render, huffman_dico
 print("Ceci est un projet d'evaluation des connaissances en codage")
 
 ## lecture du fichier text generer
-# text_data = read_data(filepath="2434.txt")
+text_data = read_data(filepath="2434.txt")
 
 ## Codage de huffman
-# M,S,P = huffman_base(text_data)
-M,S,P = (load_huffman_data('input.txt'))
+M,S,P = huffman_base(text_data)
+# M,S,P = (load_huffman_data('input.txt'))
 write_huffman_data('_huff_data.txt',M,S,P)
 
 ## Huffman dico/
