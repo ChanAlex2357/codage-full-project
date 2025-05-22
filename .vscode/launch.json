@@ -1,0 +1,7 @@
+{
+  "name": "Python: Main",
+  "type": "python3",
+  "request": "launch",
+  "program": "${workspaceFolder}/__main__.py",
+  "console": "integratedTerminal"
+}
