@@ -25,4 +25,16 @@ L = C
 print(f'L >> {L}')
 print("\nEst-ce un code ? >> ", is_code_language(L))
 
-# 
+# ================== Fonction Recurcive ===============================
+def u(n:int,a,b) :
+    if n == 1:
+        return 1
+    return a * u(n-1) + b
+
+def generate_positions(indexes:List[int], a=2, b=4):
+    positions = List()
+
+    for n in indexes:
+        positions.append(u(n),a,b)
+
+    return positions

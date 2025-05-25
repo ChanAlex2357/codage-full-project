@@ -128,8 +128,3 @@ def write_huffman_data(filepath, M, S, P):
         f.write(f"{M}\n")
         f.write(" ".join(S) + "\n")
         f.write(" ".join(map(str, P)) + "\n")
-
-def u(n:int,a = 2,b = 4) :
-    if n == 1:
-        return 1
-    return a * u(n-1) + b
