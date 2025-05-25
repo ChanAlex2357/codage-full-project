@@ -1,5 +1,6 @@
-from codage.file import read_data, write_huffman_data, write_huffman_dico, load_huffman_data
-from codage import  huffman_base, huffman_render, huffman_dico
+from codage.file import *
+from codage.huffman import  *
+from codage.language_analyser import *
 
 print("Ceci est un projet d'evaluation des connaissances en codage")
 
@@ -15,3 +16,9 @@ write_huffman_data('_huff_data.txt',M,S,P)
 C = huffman_render(M,S,P)
 dico = huffman_dico(M,S,C)
 write_huffman_dico('_huff_dico.txt',M,S,C)
+
+
+# =================== Verification code par sardinas pattersons ======================
+L = C
+print(f'L >> {L}')
+print("\nEst-ce un code ? >> ", is_code_language(L))
