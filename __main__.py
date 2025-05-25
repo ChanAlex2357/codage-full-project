@@ -10,7 +10,7 @@ print("Ceci est un projet d'evaluation des connaissances en codage")
 text_data = read_data(filepath="2434.txt")
 
 ## Codage de huffman
-M,S,P = huffman_base(text_data)
+M,S,P = huffman_base(text_data, ingnore_case=True)
 # M,S,P = (load_huffman_data('input.txt'))
 write_huffman_data('_huff_data.txt',M,S,P)
 
@@ -38,3 +38,5 @@ def generate_positions(indexes:List[int], a=2, b=4):
         positions.append(u(n),a,b)
 
     return positions
+
+# ==================

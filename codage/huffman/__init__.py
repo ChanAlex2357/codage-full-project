@@ -125,12 +125,15 @@ def huffman_dico(m: int, s: List[str], c: List[str]) -> Dict[str, str]:
     """Création du dictionnaire optimisée."""
     return {s[i]: c[i] for i in range(m)}
 
-def huffman_base(text: str, keep_spaces: bool = True) -> Tuple[int, List[str], List[float]]:
+def huffman_base(text: str, keep_spaces: bool = True, ingnore_case=False) -> Tuple[int, List[str], List[float]]:
     """Analyse de fréquence optimisée."""
     if keep_spaces:
         text = re.sub(r'\s+', ' ', text).strip()
     else:
         text = re.sub(r'[^\w]', '', text)
+
+    if ingnore_case:
+        text = text.lower()
     
     if not text:
         return 0, [], []

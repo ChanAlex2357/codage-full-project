@@ -58,23 +58,25 @@ def write_huffman_dico(filePath,m,S: List[str], C: List[str]):
             - C : la liste des codes de huffman
 
     '''
-    shortest:str = C[0]
-    longest:str = C[0]
+    shortest_idx:int = 0
+    longest_idx:int = 0
     with open(filePath, 'w') as f:
         for i in range(m):
             curr_len = C[i].__len__()
-            if shortest.__len__() > curr_len:
-                shortest = C[i]
-            if longest.__len__() < curr_len:
-                longest = C[i]
+
+            if C[shortest_idx].__len__() > curr_len:
+                shortest_idx = i
+
+            if C[longest_idx].__len__() < curr_len:
+                longest_idx = i
 
             f.write(f'{S[i]}:{C[i]}\n')
 
 
     with open("dico_summary.txt", 'w') as fs:
         fs.write(f'length : {m}\n')
-        fs.write(f'shortest : {shortest}\n')
-        fs.write(f'longest : {longest}\n')
+        fs.write(f'shortest : {S[shortest_idx]} | {C[shortest_idx]} | {C[shortest_idx].__len__()}\n')
+        fs.write(f'longest  : {S[longest_idx]} | {C[longest_idx]} | {C[longest_idx].__len__()}\n')
 
 def load_huffman_dico(filePath):
     '''
