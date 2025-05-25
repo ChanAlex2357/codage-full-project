@@ -1,5 +1,5 @@
-from steganographie import *
-from codage import *
+from codage.steganographie import *
+from codage.huffman import *
 from codage.file import *
 # Positions où les données sont cachées (doivent correspondre à l'encodage)
 positions = [

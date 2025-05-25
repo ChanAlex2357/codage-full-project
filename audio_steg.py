@@ -1,5 +1,5 @@
-from steganographie import *
-from codage import *
+from codage.steganographie import *
+from codage.huffman import *
 from codage.file import *
 
 positions = list(range(100))
