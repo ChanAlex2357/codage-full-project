@@ -2,6 +2,8 @@ from codage.file import *
 from codage.huffman import  *
 from codage.language_analyser import *
 
+# ===================== Traitement du fichier texte de baase ===================
+
 print("Ceci est un projet d'evaluation des connaissances en codage")
 
 ## lecture du fichier text generer
@@ -22,3 +24,5 @@ write_huffman_dico('_huff_dico.txt',M,S,C)
 L = C
 print(f'L >> {L}')
 print("\nEst-ce un code ? >> ", is_code_language(L))
+
+# 
