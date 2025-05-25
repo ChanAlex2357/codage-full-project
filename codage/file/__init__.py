@@ -1,4 +1,5 @@
 from typing import List
+
 def read_data(filepath,mode='r'):
     with open(filepath, mode) as f:
         data = f.read().strip()
@@ -61,19 +62,21 @@ def write_huffman_dico(filePath,m,S: List[str], C: List[str]):
     shortest_idx:int = 0
     longest_idx:int = 0
     with open(filePath, 'w') as f:
-        for i in range(m):
-            curr_len = C[i].__len__()
+        with open("docs/_language.txt", 'w') as lf:
+            for i in range(m):
+                curr_len = C[i].__len__()
 
-            if C[shortest_idx].__len__() > curr_len:
-                shortest_idx = i
+                if C[shortest_idx].__len__() > curr_len:
+                    shortest_idx = i
 
-            if C[longest_idx].__len__() < curr_len:
-                longest_idx = i
+                if C[longest_idx].__len__() < curr_len:
+                    longest_idx = i
 
-            f.write(f'{S[i]}:{C[i]}\n')
+                f.write(f'{S[i]}:{C[i]}\n')
+                lf.write(f'{C[i]}\n')
 
 
-    with open("dico_summary.txt", 'w') as fs:
+    with open("docs/_dico_summary.txt", 'w') as fs:
         fs.write(f'length : {m}\n')
         fs.write(f'shortest : {S[shortest_idx]} | {C[shortest_idx]} | {C[shortest_idx].__len__()}\n')
         fs.write(f'longest  : {S[longest_idx]} | {C[longest_idx]} | {C[longest_idx].__len__()}\n')
