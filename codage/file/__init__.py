@@ -1,3 +1,5 @@
+from typing import List
+
 def read_data(filepath,mode='r'):
     with open(filepath, mode) as f:
         data = f.read().strip()
@@ -47,7 +49,7 @@ def load_huffman_data(filepath):
         raise ValueError("Mismatch between declared size and provided data.")
     return m , alphabets, probabilities
 
-def write_huffman_dico(filePath,m,S,C):
+def write_huffman_dico(filePath,m,S: List[str], C: List[str]):
     '''
         Ecrit le dictionnaire de huffman dans un fichier
         Params :
@@ -57,9 +59,27 @@ def write_huffman_dico(filePath,m,S,C):
             - C : la liste des codes de huffman
 
     '''
+    shortest_idx:int = 0
+    longest_idx:int = 0
     with open(filePath, 'w') as f:
-        for i in range(m):
-            f.write(f'{S[i]}:{C[i]}\n')
+        with open("docs/_language.txt", 'w') as lf:
+            for i in range(m):
+                curr_len = C[i].__len__()
+
+                if C[shortest_idx].__len__() > curr_len:
+                    shortest_idx = i
+
+                if C[longest_idx].__len__() < curr_len:
+                    longest_idx = i
+
+                f.write(f'{S[i]}:{C[i]}\n')
+                lf.write(f'{C[i]}\n')
+
+
+    with open("docs/_dico_summary.txt", 'w') as fs:
+        fs.write(f'length : {m}\n')
+        fs.write(f'shortest : {S[shortest_idx]} | {C[shortest_idx]} | {C[shortest_idx].__len__()}\n')
+        fs.write(f'longest  : {S[longest_idx]} | {C[longest_idx]} | {C[longest_idx].__len__()}\n')
 
 def load_huffman_dico(filePath):
     '''

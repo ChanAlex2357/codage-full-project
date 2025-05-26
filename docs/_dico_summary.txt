@@ -1,0 +1,3 @@
+length : 36
+shortest :   | 111 | 3
+longest  : - | 110111110011 | 12
