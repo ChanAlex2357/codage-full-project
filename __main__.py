@@ -27,7 +27,7 @@ print("\nEst-ce un code ? >> ", is_code_language(L))
 
 # ================== Fonction Recurcive ===============================
 def u(n:int,a,b) :
-    if n == 1:
+    if n == 0:
         return 1
     return a * u(n-1) + b
 
@@ -39,4 +39,15 @@ def generate_positions(indexes:List[int], a=2, b=4):
 
     return positions
 
-# ==================
+# ================== Generere les positions =========================
+
+u_steps = [0,2,2,3,1,4]
+a = 2
+b = 4
+img_indexes = audio_indexes = generate_positions(u_steps, a, b)
+
+# ================== Decodage Steganographie Image =========================
+
+
+
+# ================== Decodage Steganographie Audio =========================
