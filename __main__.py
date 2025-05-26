@@ -1,6 +1,7 @@
 from codage.file import *
 from codage.huffman import  *
 from codage.language_analyser import *
+from codage.steganographie import *
 
 # ===================== Traitement du fichier texte de baase ===================
 
@@ -29,13 +30,13 @@ print("\nEst-ce un code ? >> ", is_code_language(L))
 def u(n:int,a,b) :
     if n == 0:
         return 1
-    return a * u(n-1) + b
+    return a * u(n-1,a,b) + b
 
 def generate_positions(indexes:List[int], a=2, b=4):
-    positions = List()
+    positions = []
 
     for n in indexes:
-        positions.append(u(n),a,b)
+        positions.append(u(n,a,b))
 
     return positions
 
@@ -48,6 +49,8 @@ img_indexes = audio_indexes = generate_positions(u_steps, a, b)
 
 # ================== Decodage Steganographie Image =========================
 
+img_data , metadata = read_gray_image_file("assets/img/baobab-2.jpg")
+print(f"Image data: {img_data}")
 
 
 # ================== Decodage Steganographie Audio =========================

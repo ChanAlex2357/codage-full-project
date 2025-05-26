@@ -48,6 +48,7 @@ def read_gray_image_file(filepath: str) -> Tuple[np.ndarray, dict]:
     if img is None:
         raise ValueError(f"Impossible de charger l'image: {filepath}")
 
+    flat_img = img.flatten()  # Aplatit l'image en un tableau 1D
     # Construction des métadonnées
     metadata = {
         'width': img.shape[1],
@@ -55,7 +56,7 @@ def read_gray_image_file(filepath: str) -> Tuple[np.ndarray, dict]:
         'channels': 1,
         'dtype': str(img.dtype)
     }
-    return img, metadata
+    return flat_img, metadata
 
 def convert_rgb_to_grayscale(image_path: str, output_path: str = None) -> np.ndarray:
     """
