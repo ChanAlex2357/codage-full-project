@@ -3,7 +3,6 @@ import numpy as np
 import cv2
 import struct
 
-
 def read_wav_header(file_path):
     """
     Lit et interprète les 44 premiers octets d'un fichier WAV pour en extraire les métadonnées.
@@ -38,7 +37,6 @@ def read_wav_header(file_path):
         }
 
         return header_info
-
 
 def read_gray_image_file(filepath: str) -> Tuple[np.ndarray, dict]:
     """
@@ -89,7 +87,6 @@ def convert_rgb_to_grayscale(image_path: str, output_path: str = None) -> np.nda
     
     return gray_image
 
-
 def get_lsb_bits_from_positions(img_array: np.ndarray, positions: List[Tuple[int, int]]) -> List[int]:
     """
     Extrait les bits LSB des pixels aux positions spécifiées dans une image en niveaux de gris.
@@ -114,21 +111,41 @@ def get_lsb_bits_from_positions(img_array: np.ndarray, positions: List[Tuple[int
         lsb = pixel_value & 1  # Extraction du LSB
         bits.append(lsb)
 
-        # # Affichage de debug
-        # print(f"Position ({row}, {col})")
-        # print(f"Valeur décimale: {pixel_value}")
-        # print(f"Valeur binaire: {binary_str} (LSB: {binary_str[7]})")
-        # print("-" * 30)
-
     return bits
 
+def get_lsb_bits_from_steps(img_flat: np.ndarray, steps: List[int]) -> List[int]:
+    """
+    Extrait les bits LSB à partir d'une image 1D en utilisant une liste de pas.
+
+    Args:
+        img_flat: Tableau 1D des pixels en niveaux de gris.
+        steps: Liste d'entiers indiquant les décalages successifs à appliquer.
+
+    Returns:
+        Liste des bits LSB extraits.
+    """
+    bits = []
+    index = -1  # Pointeur initialisé à -1
+
+    for step in steps:
+        index += step
+        if index >= len(img_flat):
+            raise ValueError(f"Index hors limites: {index} >= {len(img_flat)}")
+
+        pixel_value = img_flat[index]
+        lsb = pixel_value & 1
+        bits.append(lsb)
+
+        # Debug (optionnel)
+        # print(f"Index: {index}, Pixel: {pixel_value}, LSB: {lsb}")
+
+    return bits
 
 def bits_to_bytes_str(bits: List[int]) -> bytes:
     """
     Transforme une liste de bits en une chaîne de caractères binaire (bytes sous forme de string).
     """
     return ''.join([f'{i}' for i in bits])
-
 
 def bits_to_bytes(bits: List[int]) -> bytes:
     """
@@ -149,23 +166,21 @@ def bits_to_bytes(bits: List[int]) -> bytes:
         byte_array.append(byte)
     return bytes(byte_array)
 
-
-def steg_decode_gray_image_file(filepath: str, positions: List[Tuple[int, int]]) -> bytes:
+def steg_decode_gray_image_file(filepath: str, steps: List[int]) -> bytes:
     """
-    Extrait un message caché dans une image en niveaux de gris.
+    Extrait un message caché dans une image en niveaux de gris avec une liste de pas.
 
     Args:
         filepath: Chemin de l'image.
-        positions: Liste des coordonnées des pixels contenant les LSB à extraire.
+        steps: Liste des pas (entiers) entre chaque bit à extraire.
 
     Returns:
-        Message décodé sous forme de bytes (sous forme de chaîne binaire).
+        Message décodé sous forme de bytes.
     """
-    img_array, _ = read_gray_image_file(filepath)
-    bits = get_lsb_bits_from_positions(img_array, positions)
+    img_flat, _ = read_gray_image_file(filepath)
+    bits = get_lsb_bits_from_steps(img_flat, steps)
     decoded_data = bits_to_bytes_str(bits)
     return decoded_data
-
 
 def read_audio_data(file_path):
     """
@@ -195,7 +210,6 @@ def read_audio_data(file_path):
     audio_data = struct.unpack(fmt, data)
 
     return audio_data, header, fmt
-
 
 def steg_decode_wav(filepath: str, positions: List[int]) -> bytes:
     """

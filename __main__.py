@@ -42,15 +42,27 @@ def generate_positions(indexes:List[int], a=2, b=4):
 
 # ================== Generere les positions =========================
 
-u_steps = [0,2,2,3,1,4]
+u_steps = [0,3,2,3,4,1,3,2,1,7,3,5,10,11,0,8,9,3]
 a = 2
 b = 4
 img_indexes = audio_indexes = generate_positions(u_steps, a, b)
+print(f"Image indexes: {img_indexes}")
 
 # ================== Decodage Steganographie Image =========================
+print("====== Decodage de l'image ====== \n")
 
-img_data , metadata = read_gray_image_file("assets/img/baobab-2.jpg")
-print(f"Image data: {img_data}")
+img_code = steg_decode_gray_image_file("assets/img/baobab-2.jpg", img_indexes)
+print(f"Image code: {img_code}")
+img_decode = huffman_decode(img_code, dico)
+print(f"Image decoded: {img_decode}")
+
+print("\n======\n")
 
 
 # ================== Decodage Steganographie Audio =========================
+print("====== Decodage de l'audio ====== \n")
+wav_code = steg_decode_wav("assets/audio/remove/whistle-simple.wav", audio_indexes)
+print(f"Audio code: {wav_code}")
+wav_decode = huffman_decode(wav_code, dico)
+print(f"Audio decoded: {wav_decode}")
+print("\n======\n")
