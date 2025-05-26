@@ -211,30 +211,34 @@ def read_audio_data(file_path):
 
     return audio_data, header, fmt
 
-def steg_decode_wav(filepath: str, positions: List[int]) -> bytes:
+def steg_decode_wav(filepath: str, steps: List[int]) -> bytes:
     """
-    Extrait un message caché dans un fichier audio WAV en utilisant les LSB de certains échantillons.
+    Extrait un message caché dans un fichier audio WAV en utilisant les LSB d'échantillons,
+    en se basant sur une séquence de pas (steps) au lieu de positions absolues.
 
     Args:
         filepath: Chemin du fichier .wav
-        positions: Indices des échantillons à lire pour extraire les LSB
+        steps: Liste des pas successifs (deltas) pour atteindre les positions des échantillons à lire.
 
     Returns:
         Message décodé sous forme de chaîne binaire (bytes)
     """
     audio_data, header, fmt = read_audio_data(filepath)
     bits = []
+    pointer = -1  # Position initiale
 
-    for pos in positions:
-        if pos >= len(audio_data):
-            raise ValueError(f"Position invalide: {pos} - Taille audio: {len(audio_data)}")
+    for step in steps:
+        pointer += step  # Calcul de la position actuelle
 
-        sample = audio_data[pos]
+        if pointer >= len(audio_data):
+            raise ValueError(f"Position invalide: {pointer} - Taille audio: {len(audio_data)}")
+
+        sample = audio_data[pointer]
 
         if isinstance(sample, int):
             lsb = sample & 1  # Extrait le LSB
             bits.append(lsb)
-            print(f"Pos {pos} | Valeur: {sample} | LSB: {lsb}")
+            # print(f"Pos {pointer} | Valeur: {sample} | LSB: {lsb}")
         else:
             raise ValueError("Format inattendu dans les données audio")
 
