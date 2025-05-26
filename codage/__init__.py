@@ -4,6 +4,9 @@ from typing import List, Dict, Tuple
 import heapq
 from collections import Counter
 import re
+import itertools
+
+counter = itertools.count()  # global or within the function
 
 
 ## Build the huffman tree
@@ -25,18 +28,26 @@ def merge_trees(trees: List[HuffmanTree], m: int) -> List[HuffmanTree]:
     heapq.heapify(heap)
     
     while len(heap) > 1:
-        prob1, _, t1 = heapq.heappop(heap)
-        prob2, _, t2 = heapq.heappop(heap)
-        
+        prob1, idx1, temp1 = heapq.heappop(heap)
+        prob2, idx2, temp2 = heapq.heappop(heap)
+
+        # Ensure t1 has the higher prob, or lower idx if equal
+        if (prob1 > prob2) or (prob1 == prob2 and idx1 < idx2):
+            t1, t2 = temp1, temp2
+            p1, p2 = prob1, prob2
+        else:
+            t1, t2 = temp2, temp1
+            p1, p2 = prob2, prob1
+
         merged = HuffmanTree(
             libelle=t1.get_libelle() + t2.get_libelle(),
-            probabilite=prob1 + prob2,
+            probabilite=p1 + p2,
             tree1=t1,
             tree2=t2
         )
-        
-        heapq.heappush(heap, (merged.get_probabilite(), len(heap), merged))
-    
+
+        heapq.heappush(heap, (merged.get_probabilite(), len(trees) + next(counter), merged))
+
     # Reconstruction des codes de manière optimale
     final_tree = heap[0][2]
     nodes = [final_tree]
@@ -49,11 +60,11 @@ def merge_trees(trees: List[HuffmanTree], m: int) -> List[HuffmanTree]:
             continue
             
         if node.get_tree1():
-            node.get_tree1().set_code(node.get_code() + '0')
+            node.get_tree1().set_code(node.get_code() + '1')
             nodes.append(node.get_tree1())
             
         if node.get_tree2():
-            node.get_tree2().set_code(node.get_code() + '1')
+            node.get_tree2().set_code(node.get_code() + '0')
             nodes.append(node.get_tree2())
     
     return codes
